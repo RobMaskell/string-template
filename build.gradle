@@ -1,0 +1,73 @@
+plugins {
+	id 'java'
+	// id 'eclipse'
+	id 'org.springframework.boot' version '3.2.5'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.graalvm.buildtools.native' version '0.10.2'
+}
+
+group = 'com.experimental'
+version = '0.0.1-SNAPSHOT'
+
+springBoot {
+	mainClass = 'com.experimental.stringtemplate.StringtemplateApplication'
+}
+
+java {
+	sourceCompatibility = '22'
+	targetCompatibility = '22'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// turn on emable preview to pick up the string template JEP430
+tasks.withType(JavaCompile).all {
+    options.compilerArgs += ['--enable-preview']
+}
+
+// turn on emable preview to pick up the string template JEP430
+tasks.withType(JavaExec) {
+    jvmArgs += '--enable-preview'
+}
+
+graalvmNative {
+    agent {
+        enableExperimentalPredefinedClasses = false
+        enableExperimentalUnsafeAllocationTracing = false
+    }
+
+    binaries {
+        main {
+
+            // Advanced options
+            buildArgs.add('--enable-preview') // Passes '--link-at-build-time' to the native image builder options. This can be used to pass parameters which are not directly supported by this extension
+            jvmArgs.add('--enable-preview') // Passes 'flag' directly to the JVM running the native image builder
+
+            // Runtime options
+            runtimeArgs.add('--enable-preview') // Passes '--help' to built image, during "nativeRun" task
+
+        }
+    }
+}

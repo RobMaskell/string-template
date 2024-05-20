@@ -1,0 +1,35 @@
+
+body {
+    margin: 0; 
+}
+
+header {
+    background-color: #aaaaaa;
+    margin: 0;
+    padding: 1ex 1em;
+}
+
+header a {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+section {
+    padding: 1ex 1em;
+}
+
+.holder {
+    display: flex;
+}
+
+.card {
+    margin-right: 1em;
+    padding: 1ex 1em;
+    background-color: #eeeeee;
+    border: 2px #aaaaaa;
+}
+
+.control {
+	padding: 1ex 1em;
+	vertical-align: top;
+}
